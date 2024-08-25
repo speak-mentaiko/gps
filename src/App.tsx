@@ -12,6 +12,7 @@ function App() {
   const [loclist, setLoclist] = useState<data[]>([]);
 
   const startWatchPosition = () => {
+    getLocation();
     setWatchStatus(true);
   };
 
@@ -20,15 +21,19 @@ function App() {
     setLoclist([]);
   };
 
+  const getLocation = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+      const newLocation = { latitude, longitude };
+      setLocation(newLocation);
+      setLoclist((prevLoclist) => [...prevLoclist, location]);
+    });
+  };
+
   useEffect(() => {
     if (watchStatus) {
       const interval = setInterval(() => {
-        navigator.geolocation.getCurrentPosition((position) => {
-          const { latitude, longitude } = position.coords;
-          const newLocation = { latitude, longitude };
-          setLocation(newLocation);
-          setLoclist((prevLoclist) => [...prevLoclist, location]);
-        });
+        getLocation();
       }, 10000); // 10秒間隔で実行
       return () => clearInterval(interval);
     }
