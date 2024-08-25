@@ -8,7 +8,7 @@ export const Home = () => {
   };
 
   const [location, setLocation] = useState<data>({ latitude: 0, longitude: 0 });
-  const [watchStatus, setWatchStatus] = useState(false);
+  const [isWatch, setWatchStatus] = useState(false);
   const [loclist, setLoclist] = useState<data[]>([]);
 
   const startWatchPosition = () => {
@@ -18,7 +18,7 @@ export const Home = () => {
 
   const stopWatchPosition = () => {
     setWatchStatus(false);
-    fetch(`${import.meta.env.VITE_API_URL}/contents/new`, {
+    fetch(`${import.meta.env.VITE_API_URL}/list/new`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(loclist),
@@ -45,13 +45,14 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    if (watchStatus) {
+    if (isWatch) {
       const interval = setInterval(() => {
         getLocation();
       }, 10000); // 10秒間隔で実行
+      console.log(location);
       return () => clearInterval(interval);
     }
-  }, [watchStatus, location]);
+  }, [isWatch, location]);
 
   return (
     <>
@@ -59,6 +60,7 @@ export const Home = () => {
       <button onClick={stopWatchPosition}>位置情報取得終了</button>
       <div>{location.latitude}</div>
       <div>{location.longitude}</div>
+      {isWatch ? <p>記録中</p> : <p></p>}
     </>
   );
 };

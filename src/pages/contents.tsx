@@ -28,13 +28,15 @@ export const Contents = () => {
       <p>id:{data?.id}</p>
       {data?.data.map((element) => {
         return (
-          <p>
-            lon:{element.longitude}
-            <br />
-            lat:{element.latitude}
-            <br />
-            ----------------------------
-          </p>
+          <div>
+            <p>
+              lon:{element.longitude}
+              <br />
+              lat:{element.latitude}
+              <br />
+              ----------------------------
+            </p>
+          </div>
         );
       })}
     </>

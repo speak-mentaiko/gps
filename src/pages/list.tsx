@@ -6,8 +6,14 @@ export const List = () => {
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/list`, { method: "GET" })
       .then((res) => res.json())
-      .then((json) => setData(json.ids));
+      .then((json) => {
+        if (json.ids.length) {
+          setData(json.ids);
+        }
+      });
   }, []);
+
+  console.log(data);
 
   return (
     <>
@@ -15,7 +21,7 @@ export const List = () => {
       {data.map((element) => {
         const url = `/list/${element}`;
         return (
-          <Link to={url}>
+          <Link to={url} key={element}>
             <p>{element}</p>
           </Link>
         );
