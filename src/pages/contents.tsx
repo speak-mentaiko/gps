@@ -16,7 +16,7 @@ export const Contents = () => {
   const [data, setData] = useState<data | undefined>(undefined);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/contents/list/${id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/list/${id}`, {
       method: "GET",
     })
       .then((res) => res.json())

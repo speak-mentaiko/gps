@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export const List = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/contents/list`, { method: "GET" })
+    fetch(`${import.meta.env.VITE_API_URL}/list`, { method: "GET" })
       .then((res) => res.json())
       .then((json) => setData(json.ids));
   }, []);
