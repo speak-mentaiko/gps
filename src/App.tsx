@@ -14,11 +14,13 @@ function App() {
   const startWatchPosition = () => {
     getLocation();
     setWatchStatus(true);
+    console.log(loclist);
   };
 
   const stopWatchPosition = () => {
     setWatchStatus(false);
     setLoclist([]);
+    console.log(loclist);
   };
 
   const getLocation = () => {
