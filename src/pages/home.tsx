@@ -1,15 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { atom, useRecoilState } from "recoil";
 import "./styles/App.css";
 
 export const Home = () => {
-  type data = {
-    latitude: number;
-    longitude: number;
-  };
+  const dataAtom = atom({
+    key: "dataAtom",
+    default: [
+      {
+        latitude: 0,
+        longitude: 0,
+      },
+    ],
+  });
 
-  const [location, setLocation] = useState<data>({ latitude: 0, longitude: 0 });
-  const [isWatch, setWatchStatus] = useState(false);
-  const [loclist, setLoclist] = useState<data[]>([]);
+  const isWatchAtom = atom({
+    key: "isWatchAtom",
+    default: false,
+  });
+
+  const [loclist, setLoclist] = useRecoilState(dataAtom);
+  const [isWatch, setWatchStatus] = useRecoilState(isWatchAtom);
 
   const startWatchPosition = () => {
     getLocation();
@@ -39,8 +49,7 @@ export const Home = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       const { latitude, longitude } = position.coords;
       const newLocation = { latitude, longitude };
-      setLocation(newLocation);
-      setLoclist((prevLoclist) => [...prevLoclist, location]);
+      setLoclist((prevLoclist) => [...prevLoclist, newLocation]);
     });
   };
 
@@ -49,17 +58,14 @@ export const Home = () => {
       const interval = setInterval(() => {
         getLocation();
       }, 10000); // 10秒間隔で実行
-      console.log(location);
       return () => clearInterval(interval);
     }
-  }, [isWatch, location]);
+  }, [isWatch]);
 
   return (
     <>
       <button onClick={startWatchPosition}>位置情報取得開始</button>
       <button onClick={stopWatchPosition}>位置情報取得終了</button>
-      <div>{location.latitude}</div>
-      <div>{location.longitude}</div>
       {isWatch ? <p>記録中</p> : <p></p>}
     </>
   );
